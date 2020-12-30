@@ -97,21 +97,26 @@ const App = () => {
       }
       setCurrentScore(0);
       // reset all images
-      setImages(
-        images.map((image) =>
-          image.selected === true ? { ...image, selected: false } : image
-        )
+
+      let newArray = images.map((image) =>
+        image.selected === true ? { ...image, selected: false } : image
       );
+
+      reorder(newArray);
+      setImages(newArray);
     } else {
-      setImages(
-        images.map((image) =>
-          image.name !== name
-            ? image
-            : image.selected === false
-            ? { ...image, selected: true }
-            : image
-        )
+      setImages();
+
+      let newArray = images.map((image) =>
+        image.name !== name
+          ? image
+          : image.selected === false
+          ? { ...image, selected: true }
+          : image
       );
+
+      reorder(newArray);
+      setImages(newArray);
       setCurrentScore(currentScore + 1);
     }
   };
@@ -119,13 +124,13 @@ const App = () => {
   const display = (
     <Fragment>
       <h1>Memory Card Game</h1>
-      <button onClick={reorder}>shuffle</button>
       <p>
         Get points by clicking on an image but don't click on any more than
         once!
       </p>
       <h4>Current Score = {currentScore}</h4>
-      <h4>High Score = {highScore}</h4>
+      <small> High Score = {highScore}</small>
+
       <div className="card-wrapper">
         {images.map((image) => (
           <Card makeGuess={makeGuess} key={uniqid()} image={image} />
